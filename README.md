@@ -48,6 +48,7 @@ This project provides a Selenium WebDriver framework for testing web application
 
 ## Running the Tests
 
+### Docker execution
 You can run the tests by executing commands inside the running container.
 
 -   **Run all tests:**
@@ -57,7 +58,7 @@ You can run the tests by executing commands inside the running container.
 
 -   **Run specific tests using markers:**
     ```bash
-    docker compose exec selenium_tests-1 pytest -m smoke
+    docker compose exec selenium_tests pytest -m smoke
     ```
 
 -   **Generate an HTML report:**
@@ -68,6 +69,30 @@ You can run the tests by executing commands inside the running container.
 The generated report will be available in the `reports` directory on your local machine.
 The generated logs will be available in the `logs` directory on your local machine.
 
+### Local execution
+-   **Create virtual environment:**
+    ```bash
+    python -m venv .venv
+    ```
+-   **Activate virtual environment:**
+    ```bash
+    .\.venv\Scripts\activate
+    ```
+-   **Select venv from Visual Studio Code:**
+    Open the Command Palette (Ctrl+Shift+P), search for the Python: Select Interpreter command, and select it (e.g. .venv\Scripts\python.exe)
+-   **Install dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+-   **Run all tests:**
+    ```bash
+    pytest tests/
+    ```
+-   **Run specific tests using markers:**
+    ```bash
+    pytest -m smoke --html=reports/report.html --self-contained-html
+    ```
+
 ## Project Structure
 
 ```
@@ -76,13 +101,10 @@ The generated logs will be available in the `logs` directory on your local machi
 ├── docker-compose.yml      # Docker Compose configuration
 ├── Dockerfile              # Dockerfile for the test environment
 ├── pages                   # Page Object Model classes
-│   ├── create_users_page.py
-│   └── dashboard_page.py
 ├── reports                 # Test reports
 ├── requirements.txt        # Python dependencies
 ├── run_selenium_docker.bat # Batch script to build and run the container
 ├── tests                   # Test suites
-│   └── test_create_users_page.py
 └── utils                   # Utility modules
     ├── browser.py
     ├── config.py
