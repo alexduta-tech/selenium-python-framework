@@ -38,13 +38,17 @@ This project provides a Selenium WebDriver framework for testing web application
     ```
 
 2.  **Build and start the container:**
-    ```bash
-    run_selenium_docker.bat
-    ```
+- Docker setup is automated using a batch script.
+    1. Ensure Docker Desktop is installed and running
+    2. Run the setup script:
 
-    This will build the Docker image and start the container in the background.
+        ```bash
+        run_selenium_docker.bat
+        ```
+
+- This will build the Docker image and start the container in the background.
     
-    Note: Initial Docker execution may take additional time to build the image and download dependencies. This is a one-time cost; later runs benefit from Docker’s caching mechanism.
+- Note: Initial Docker execution may take additional time to build the image and download dependencies. This is a one-time cost; later runs benefit from Docker’s caching mechanism.
 
 ## Running the Tests
 
