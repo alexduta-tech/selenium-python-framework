@@ -33,8 +33,8 @@ This project provides a Selenium WebDriver framework for testing web application
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/python-selenium-docker.git
-    cd python-selenium-docker
+    git clone https://github.com/alexduta-tech/selenium-python-framework.git
+    cd selenium-python-framework
     ```
 
 2.  **Build and start the container:**
