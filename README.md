@@ -1,6 +1,6 @@
 # Python Selenium Docker
 
-This project provides a Selenium WebDriver framework for testing web applications in a Docker container using Python. It includes sample test cases and demonstrates the use of the Page Object Model (POM) design pattern.
+This project provides a Selenium WebDriver framework for testing web applications in Docker container using Python. It includes sample test cases and demonstrates the use of the Page Object Model (POM) design pattern.
 
 ## Tech stack
 
@@ -13,7 +13,7 @@ This project provides a Selenium WebDriver framework for testing web application
 ## Features
 
 - **Programming language:** Python, chosen for readability and strong Selenium ecosystem
-- **Web framework:** Selenium WebDriver
+- **Web automation framework:** Selenium WebDriver
 - **Cross-platform support:** Windows and Linux
 - **Cross-browser testing:** Chrome, Firefox, and Edge
 - **Dockerized Environment:** Tests can be run in Docker containers with all dependencies preinstalled, enabling consistent and OS-independent execution
@@ -53,7 +53,8 @@ This project provides a Selenium WebDriver framework for testing web application
 ## Running the Tests
 
 ### Docker execution
-You can run the tests by executing commands inside the running container.
+- You can run the tests by executing commands inside the running container.
+- From selenium-python-framework foler execute the following commands:
 
 -   **Run all tests:**
     ```bash
@@ -74,17 +75,18 @@ The generated report will be available in the `reports` directory on your local 
 The generated logs will be available in the `logs` directory on your local machine.
 
 ### Local execution
--   **Create virtual environment:**
+-   **Create virtual environment (if not already created):**
     ```bash
     python -m venv .venv
     ```
 -   **Activate virtual environment:**
+-   **Activate virtual environment (if not already activated):**
     ```bash
     .\.venv\Scripts\activate
     ```
--   **Select venv from Visual Studio Code:**
+-   **Select interpreter from Visual Studio Code (if not already selected):**
     Open the Command Palette (Ctrl+Shift+P), search for the Python: Select Interpreter command, and select it (e.g. .venv\Scripts\python.exe)
--   **Install dependencies:**
+-   **Install dependencies (if not already installed):**
     ```bash
     pip install -r requirements.txt
     ```
@@ -106,7 +108,9 @@ The generated logs will be available in the `logs` directory on your local machi
 ├── Dockerfile              # Dockerfile for the test environment
 ├── pages                   # Page Object Model classes
 ├── reports                 # Test reports
+├── logs                    # Test logs
 ├── requirements.txt        # Python dependencies
+├── pyproject.toml          # Python project metadata
 ├── run_selenium_docker.bat # Batch script to build and run the container
 ├── tests                   # Test suites
 └── utils                   # Utility modules
