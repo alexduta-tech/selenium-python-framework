@@ -5,9 +5,10 @@ FROM python:3.12-slim as builder
 # Set work directory inside the image
 WORKDIR /app
 
-# Copy only requirements.txt before installing to leverage Docker layer cache
+# Copy requirements.txt to the working directory (needed for installing dependencies)
 COPY requirements.txt .
-# Install Python dependencies first so they can be cached between builds, If pip is already installed, it upgrades it to the latest version
+
+# Upgrade pip, install Python dependencies from requirements.txt
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
@@ -46,7 +47,7 @@ ENV PYTHONUNBUFFERED=1
 # Ensure same working directory in the final image
 WORKDIR /app
 
-# Copy project files: Copy everything from the current directory on your host (the build context) into the current working directory inside the container.”
+# Copy project files: Copy everything from the current directory on your host (the build context) into the current working directory inside the container.
 COPY . .
 
 # Create writable directories for reports and logs that are also mounted from host
