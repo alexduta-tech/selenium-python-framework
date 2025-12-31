@@ -15,7 +15,7 @@ This project provides a Selenium WebDriver framework for testing web application
 - **Programming language:** Python, chosen for readability and strong Selenium ecosystem
 - **Web automation framework:** Selenium WebDriver
 - **Cross-platform support:** Windows and Linux
-- **Cross-browser testing:** Chrome, Firefox, and Edge
+- **Cross-browser testing:** Chrome, Firefox, and Edge (or Chromium based browsers on Docker)
 - **Dockerized Environment:** Tests can be run in Docker containers with all dependencies preinstalled, enabling consistent and OS-independent execution
 - **Page Object Model:** Organizes page elements and interactions for better maintainability.
 - **Pytest Framework:** Uses pytest for writing and running tests.

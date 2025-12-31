@@ -20,8 +20,8 @@ def get_driver(logger):
         elif browser_name == "edge":
             # Docker: Edge isn't in starndard Debian repos by default, using Chromium-based Edge
             if running_in_docker(logger):
-                logger.info("Running in Docker: using Chromium-based Edge")
-                driver = start_chrome_driver(headless)
+                logger.info("Running in Docker: using Chromium-Edge")
+                driver = start_chromium_edge_driver(headless)
             else:
                 logger.info("Not running in Docker: using Microsoft Edge")
                 driver = start_edge_driver(headless)
@@ -58,7 +58,18 @@ def start_chrome_driver(headless: bool):
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--window-size=1920,1080")
     driver = webdriver.Chrome(options=options)
-        
+    return driver
+    
+def start_chromium_edge_driver(headless: bool):
+    """Start a Chromium Edge instance."""
+    options = ChromeOptions()
+    if headless:
+        options.add_argument("--headless=new")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--window-size=1920,1080")
+    driver = webdriver.ChromiumEdge(options=options)
     return driver
     
 def start_firefox_driver(headless: bool):
@@ -69,7 +80,6 @@ def start_firefox_driver(headless: bool):
         options.add_argument("--width=1920")
         options.add_argument("--height=1080")
     driver = webdriver.Firefox(options=options)
-        
     return driver
 
 def start_edge_driver(headless: bool):
@@ -79,5 +89,4 @@ def start_edge_driver(headless: bool):
         options.add_argument("--headless")
         options.add_argument("--window-size=1920,1080")
     driver = webdriver.Edge(options=options)
-        
     return driver
