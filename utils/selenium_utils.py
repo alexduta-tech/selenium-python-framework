@@ -13,8 +13,24 @@ class SeleniumUtils:
         Returns:
             bool: True if the element is present, False otherwise.
         """
+
+        self.logger.info(f"Checking if element is present: {locator}")
         try:
             self.driver.find_element(*locator)
-            return True
+            # scroll to the element (useful for taking screenshots)
+            self.scroll_to_element(locator)
+            self.logger.info("Element is present")
+            return True 
         except:
+            self.logger.info("Element is not present")
             return False
+        
+    def scroll_to_element(self, locator):
+        """Scroll the page to bring the element into view.
+        Args:
+            locator: Tuple of (By, locator) to find the element.
+        """
+        self.logger.debug(f"Scrolling to element: {locator}")
+        element = self.driver.find_element(*locator)
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
+        self.logger.debug("Scrolled to element")

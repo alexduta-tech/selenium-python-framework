@@ -9,8 +9,10 @@ class DashboardPage():
         self.driver = driver
         self.logger = logger
     
+    # Locators
     CREATE_USER_LINK = (By.XPATH, "//a[@href='/create-user']")
 
+    # Page Object Methods
     def open_create_users_page(self):
         """
         Open the Create Users page.

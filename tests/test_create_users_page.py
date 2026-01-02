@@ -21,3 +21,18 @@ def test_access_create_users_page(driver, logger):
     create_users_page = dashboard_page.open_create_users_page()
     
     assert create_users_page.is_at(), "Failed to access create users page"
+    
+@pytest.mark.smoke
+def test_create_user_required_fields(driver, logger):
+    """
+    Test negative flow for creating a user: name and email are required fields
+    """
+    logger.info(f"Opening URL: {BASE_URL}")
+    driver.get(BASE_URL)
+    
+    dashboard_page = DashboardPage(driver, logger)
+    create_users_page = dashboard_page.open_create_users_page()
+    
+    create_users_page.click_create_user_button()
+    assert create_users_page.is_required_fields_error_displayed(), "Error message was not displayed for required fields: Name and Email"
+    
