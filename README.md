@@ -103,6 +103,14 @@ The generated logs will be available in the `logs` directory on your local machi
     pytest -m smoke --html=reports/report.html --self-contained-html
     ```
 
+### Browser's
+-   To run tests on different browsers, update \utils\config.py\ DEFAULT_BROWSER variable:
+    ```bash
+    DEFAULT_BROWSER = "chrome"
+    DEFAULT_BROWSER = "firefox"
+    DEFAULT_BROWSER = "edge"
+    ```
+
 ## Project Structure
 
 ```
