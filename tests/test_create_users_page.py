@@ -4,15 +4,29 @@ Test suite for the create users page
 import pytest
 from utils.config import BASE_URL
 from pages.dashboard_page import DashboardPage
+from utils.data_generator import random_name, random_email, random_role, random_status, profile_photo
 
-# create venv: python -m venv .venv
-# activate venv: .\.venv\Scripts\activate
-# install dependencies: pip install -r requirements.txt
-# run tests: pytest -m smoke --html=reports/report.html --self-contained-html
 @pytest.mark.smoke
-def test_access_create_users_page(driver, logger):
+def test_create_10_users(driver, logger):
     """
-    Test access to the create users page
+    Test creating 10 users
+    """
+    logger.info(f"Opening URL: {BASE_URL}")
+    driver.get(BASE_URL)
+    
+    dashboard_page = DashboardPage(driver, logger)
+    create_users_page = dashboard_page.open_create_users_page()
+    create_users_page.create_10_users()
+    
+    assert create_users_page.are_10_users_created(), "10 Users were not created"
+    
+@pytest.mark.parametrize("name,email,role,status,profile_photo", [
+    (random_name, random_email, random_role, random_status, profile_photo)
+],ids=["Create user with random data"])
+@pytest.mark.smoke
+def test_create_user_success(driver, logger, name, email, role, status, profile_photo):
+    """
+    Test positive flow for creating a user
     """
     logger.info(f"Opening URL: {BASE_URL}")
     driver.get(BASE_URL)
@@ -20,10 +34,19 @@ def test_access_create_users_page(driver, logger):
     dashboard_page = DashboardPage(driver, logger)
     create_users_page = dashboard_page.open_create_users_page()
     
-    assert create_users_page.is_at(), "Failed to access create users page"
+    create_users_page.fill_user_form(
+        name=name,
+        email=email,
+        role=role,
+        status=status,
+        profile_photo_path=profile_photo
+    )
     
+    create_users_page.click_create_user_button()
+    assert create_users_page.is_user_created(), "User was not created"  
+
 @pytest.mark.smoke
-def test_create_user_required_fields(driver, logger):
+def test_create_user_negative(driver, logger):
     """
     Test negative flow for creating a user: name and email are required fields
     """
