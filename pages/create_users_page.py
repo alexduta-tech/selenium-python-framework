@@ -29,7 +29,7 @@ class CreateUsersPage():
     INPUT_PROFILE_PHOTO = (By.XPATH, "//input[@type='file']")
     
     # Page Object Methods
-    def wait_for_page_load(self, timeout=5):
+    def wait_for_page_load(self, timeout=5) -> None: 
         """
         Wait for the Create Users page to load by checking the presence of the uri.
         
@@ -41,7 +41,7 @@ class CreateUsersPage():
             lambda d: self.page_path in d.current_url 
         )    
 
-    def is_at(self):
+    def is_at(self) -> bool:
         """
         Verify that we are on the Create Users page by checking for the presence of a mandatory element.
         
@@ -50,21 +50,25 @@ class CreateUsersPage():
         """
         return self.selenium_utils.is_element_present(self.BUTTON_CREATE_10_USERS)
     
-    def click_create_user_button(self):
+    def click_create_user_button(self) -> 'CreateUsersPage':
         """
         Click the Create User button.
         """
         self.logger.info("Clicking create user button")
         self.driver.find_element(*self.BUTTON_CREATE_USER).click()
         
-    def create_10_users(self):
+        return self
+        
+    def create_10_users(self) -> 'CreateUsersPage':
         """
         Click the Create 10 Users button.
         """
         self.logger.info("Clicking create 10 users button")
         self.driver.find_element(*self.BUTTON_CREATE_10_USERS).click()
-    
-    def is_required_fields_error_displayed(self):
+        
+        return self
+
+    def is_required_fields_error_displayed(self) -> bool:
         """
         Check if the required fields error message is displayed.
         
@@ -73,7 +77,7 @@ class CreateUsersPage():
         """
         return self.selenium_utils.is_element_present(self.MESSAGE_GENERIC_LOCATOR(MESSAGE_CREATE_USER_ERROR_REQUIRED_FIELDS_TEXT))
     
-    def fill_user_form(self, name, email, role, status, profile_photo_path=None):
+    def fill_user_form(self, name, email, role, status, profile_photo_path=None) -> 'CreateUsersPage':
         """
         Fill the user creation form with provided details.
         
@@ -103,9 +107,11 @@ class CreateUsersPage():
 
         if profile_photo_path:
             self.logger.info(f"Uploading profile picture: {profile_photo_path}")
-            self.driver.find_element(*self.INPUT_PROFILE_PHOTO).send_keys(profile_photo_path)    
+            self.driver.find_element(*self.INPUT_PROFILE_PHOTO).send_keys(profile_photo_path)   
             
-    def is_user_created(self):
+        return self
+
+    def is_user_created(self) -> bool:
         """
         Check if the user creation success message is displayed.
         
@@ -114,7 +120,7 @@ class CreateUsersPage():
         """
         return self.selenium_utils.is_element_present(self.MESSAGE_GENERIC_LOCATOR(MESSAGE_CREATE_USER_SUCCESS_TEXT))
     
-    def are_10_users_created(self):
+    def are_10_users_created(self) -> bool:
         """
         Check if the user creation success message for 10 users is displayed.
         

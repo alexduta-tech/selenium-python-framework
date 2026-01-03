@@ -13,7 +13,7 @@ class DashboardPage():
     CREATE_USER_LINK = (By.XPATH, "//a[@href='/create-user']")
 
     # Page Object Methods
-    def open_create_users_page(self):
+    def open_create_users_page(self) -> CreateUsersPage:
         """
         Open the Create Users page.
         
