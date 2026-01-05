@@ -21,12 +21,13 @@ class CreateUsersPage():
     # Locators        
     BUTTON_CREATE_USER = (By.XPATH, "//button[text()='Create User']")
     BUTTON_CREATE_10_USERS = (By.XPATH, "//button[text()='Create 10 Users']")
+    BUTTON_BACK_TO_DASHBOARD = (By.XPATH, "//button[contains(.,'Back')]")
     MESSAGE_GENERIC_LOCATOR = lambda self, msg: (By.XPATH, f"//div[text()='{msg}']")
     INPUT_NAME = (By.ID, "name")
     INPUT_EMAIL = (By.ID, "email")
+    INPUT_PROFILE_PHOTO = (By.XPATH, "//input[@type='file']")
     SELECT_ROLE = (By.ID, "role")
     SELECT_STATUS = (By.ID, "status")
-    INPUT_PROFILE_PHOTO = (By.XPATH, "//input[@type='file']")
     
     # Page Object Methods
     def wait_for_page_load(self, timeout=5) -> None: 
@@ -39,7 +40,14 @@ class CreateUsersPage():
         self.logger.info("Waiting for Create Users page to load")
         WebDriverWait(self.driver, timeout).until(
             lambda d: self.page_path in d.current_url 
-        )    
+        )
+        
+    def go_back_to_dashboard(self) -> None:
+        """
+        Go back to the Dashboard page.
+        """
+        self.logger.info("Clicking back to dashboard button")
+        self.driver.find_element(*self.BUTTON_BACK_TO_DASHBOARD).click()    
 
     def is_at(self) -> bool:
         """
