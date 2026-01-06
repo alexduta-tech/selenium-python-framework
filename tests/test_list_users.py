@@ -112,10 +112,17 @@ def test_pagination(driver, logger):
     Test pagination
     """
     # create more than 10 users to enable pagination
-    _create_users(driver, logger)
-    _create_users(driver, logger)
+    logger.info(f"Opening URL: {BASE_URL}")
+    driver.get(BASE_URL)
     
     dashboard_page = DashboardPage(driver, logger)
+    
+    # create more than 10 users
+    create_users_page = dashboard_page.open_create_users_page()
+    create_users_page.create_10_users()
+    create_users_page.create_10_users()
+    create_users_page.go_back_to_dashboard()
+        
     list_all_users_page = dashboard_page.open_list_all_users_page()
     first_page_users = list_all_users_page.get_displayed_users_rows()
     list_all_users_page.go_to_next_page()

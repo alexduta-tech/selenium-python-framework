@@ -47,6 +47,7 @@ class CreateUsersPage():
         Go back to the Dashboard page.
         """
         self.logger.info("Clicking back to dashboard button")
+        self.selenium_utils.scroll_to_element(self.BUTTON_BACK_TO_DASHBOARD)
         self.driver.find_element(*self.BUTTON_BACK_TO_DASHBOARD).click()    
 
     def is_at(self) -> bool:
