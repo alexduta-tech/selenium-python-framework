@@ -2,9 +2,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.select import Select
+from utils.selenium_utils import SeleniumUtils
 
 from utils.constants import MESSAGE_CREATE_10_USERS_SUCCESS_TEXT, MESSAGE_CREATE_USER_ERROR_REQUIRED_FIELDS_TEXT, MESSAGE_CREATE_USER_SUCCESS_TEXT
-from utils.selenium_utils import SeleniumUtils
+from utils.config import IMPLICIT_WAIT
 
 class CreateUsersPage():
     """
@@ -28,6 +29,7 @@ class CreateUsersPage():
     INPUT_PROFILE_PHOTO = (By.XPATH, "//input[@type='file']")
     SELECT_ROLE = (By.ID, "role")
     SELECT_STATUS = (By.ID, "status")
+    LOADING_SPINNER = (By.ID, "spinner")
     
     # Page Object Methods
     def wait_for_page_load(self, timeout=5) -> None: 
@@ -66,6 +68,12 @@ class CreateUsersPage():
         self.logger.info("Clicking create user button")
         self.driver.find_element(*self.BUTTON_CREATE_USER).click()
         
+        # wait for possible loading spinner to disappear
+        if self.selenium_utils.is_element_present(self.LOADING_SPINNER):
+            WebDriverWait(self.driver, IMPLICIT_WAIT).until(
+                lambda d: not d.find_element(*self.LOADING_SPINNER).is_displayed()
+            )
+        
         return self
         
     def create_10_users(self) -> 'CreateUsersPage':
@@ -74,6 +82,12 @@ class CreateUsersPage():
         """
         self.logger.info("Clicking create 10 users button")
         self.driver.find_element(*self.BUTTON_CREATE_10_USERS).click()
+        
+        # wait for possible loading spinner to disappear
+        if self.selenium_utils.is_element_present(self.LOADING_SPINNER):
+            WebDriverWait(self.driver, IMPLICIT_WAIT).until(
+                lambda d: not d.find_element(*self.LOADING_SPINNER).is_displayed()
+            )
         
         return self
 

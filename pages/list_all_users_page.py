@@ -3,6 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
+from utils.config import IMPLICIT_WAIT
 from utils.selenium_utils import SeleniumUtils
 
 class ListAllUsersPage():
@@ -28,7 +29,7 @@ class ListAllUsersPage():
     TABLE_NO_USERS_FOUND_MESSAGE = (By.ID, "noUsersCell")
     TABLE_NEXT_PAGE_BUTTON = (By.ID, "nextPage")
     TABLE_PREVIOUS_PAGE_BUTTON = (By.ID, "prevPage")
-
+    LOADING_SPINNER = (By.ID, "spinner")
         
     # Page Object Methods
     def wait_for_page_load(self, timeout=5) -> None:
@@ -92,10 +93,11 @@ class ListAllUsersPage():
         if not any(k in kwargs for k in ['name', 'email', 'role', 'status']):
             self.logger.warning("No valid keyword argument provided for filtering by name or email. Please use 'name' or 'email'.")
         
-        #wait for the table to refresh/load
-        WebDriverWait(self.driver, 5).until(
-            lambda d: d.find_element(*self.TABLE_USERS).is_displayed()
-        )
+        # wait for possible loading spinner to disappear
+        if self.selenium_utils.is_element_present(self.LOADING_SPINNER):
+            WebDriverWait(self.driver, IMPLICIT_WAIT).until(
+                lambda d: not d.find_element(*self.LOADING_SPINNER).is_displayed()
+            )
         
         return self
     
@@ -143,10 +145,11 @@ class ListAllUsersPage():
         self.logger.info("Clicking next page button")
         self.driver.find_element(*self.TABLE_NEXT_PAGE_BUTTON).click()
  
-        #wait for the table to refresh/load
-        WebDriverWait(self.driver, 5).until(
-            lambda d: d.find_element(*self.TABLE_USERS).is_displayed()
-        )
+        # wait for possible loading spinner to disappear
+        if self.selenium_utils.is_element_present(self.LOADING_SPINNER):
+            WebDriverWait(self.driver, IMPLICIT_WAIT).until(
+                lambda d: not d.find_element(*self.LOADING_SPINNER).is_displayed()
+            )
  
         return self
     
@@ -157,10 +160,11 @@ class ListAllUsersPage():
         self.logger.info("Clicking previous page button")
         self.driver.find_element(*self.TABLE_PREVIOUS_PAGE_BUTTON).click()
         
-        #wait for the table to refresh/load
-        WebDriverWait(self.driver, 5).until(
-            lambda d: d.find_element(*self.TABLE_USERS).is_displayed()
-        )
+        # wait for possible loading spinner to disappear
+        if self.selenium_utils.is_element_present(self.LOADING_SPINNER):
+            WebDriverWait(self.driver, IMPLICIT_WAIT).until(
+                lambda d: not d.find_element(*self.LOADING_SPINNER).is_displayed()
+            )
                 
         return self
 
@@ -183,9 +187,10 @@ class ListAllUsersPage():
         self.logger.info("Clicking reset filters button")
         self.driver.find_element(*self.BUTTON_RESET_FILTERS).click()
         
-        # wait for the table to refresh/load
-        WebDriverWait(self.driver, 5).until(
-            lambda d: d.find_element(*self.TABLE_USERS).is_displayed()
-        )
+        # wait for possible loading spinner to disappear
+        if self.selenium_utils.is_element_present(self.LOADING_SPINNER):
+            WebDriverWait(self.driver, IMPLICIT_WAIT).until(
+                lambda d: not d.find_element(*self.LOADING_SPINNER).is_displayed()
+            )
         
         return self

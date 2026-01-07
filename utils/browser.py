@@ -9,26 +9,26 @@ def get_driver(logger):
     browser_name = DEFAULT_BROWSER
     headless = DEFAULT_HEADLESS
     driver = None
-
+    
     try:
         if browser_name == "chrome":
-            driver = start_chrome_driver(headless)
+            driver = _start_chrome_driver(headless)
 
         elif browser_name == "firefox":
-            driver = start_firefox_driver(headless)
+            driver = _start_firefox_driver(headless)
 
         elif browser_name == "edge":
             # Docker: Edge isn't in starndard Debian repos by default, using Chromium-based Edge
             if running_in_docker(logger):
                 logger.info("Running in Docker: using Chromium-Edge")
-                driver = start_chromium_edge_driver(headless)
+                driver = _start_chromium_edge_driver(headless)
             else:
                 logger.info("Not running in Docker: using Microsoft Edge")
-                driver = start_edge_driver(headless)
+                driver = _start_edge_driver(headless)
 
         else:
             logger.warning(f"Browser '{browser_name}' not supported, defaulting to Chrome.")
-            driver = start_chrome_driver(headless)
+            driver = _start_chrome_driver(headless)
 
     except Exception:
         logger.exception(
@@ -48,7 +48,7 @@ def get_driver(logger):
     logger.info(f"{browser_name.capitalize()} driver started. Headless={headless}")
     return driver
 
-def start_chrome_driver(headless: bool):
+def _start_chrome_driver(headless: bool):
     """Start a Chrome WebDriver instance."""
     options = ChromeOptions()
     if headless:
@@ -60,7 +60,7 @@ def start_chrome_driver(headless: bool):
     driver = webdriver.Chrome(options=options)
     return driver
     
-def start_chromium_edge_driver(headless: bool):
+def _start_chromium_edge_driver(headless: bool):
     """Start a Chromium Edge instance."""
     options = ChromeOptions()
     if headless:
@@ -72,7 +72,7 @@ def start_chromium_edge_driver(headless: bool):
     driver = webdriver.ChromiumEdge(options=options)
     return driver
     
-def start_firefox_driver(headless: bool):
+def _start_firefox_driver(headless: bool):
     """Start a Firefox WebDriver instance."""
     options = FirefoxOptions()
     if headless:
@@ -82,7 +82,7 @@ def start_firefox_driver(headless: bool):
     driver = webdriver.Firefox(options=options)
     return driver
 
-def start_edge_driver(headless: bool):
+def _start_edge_driver(headless: bool):
     """Start an Edge WebDriver instance."""
     options = EdgeOptions()
     if headless:
