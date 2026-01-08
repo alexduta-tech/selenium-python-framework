@@ -111,13 +111,12 @@ def test_pagination(driver, logger):
     """
     Test pagination
     """
-    # create more than 10 users to enable pagination
     logger.info(f"Opening URL: {BASE_URL}")
     driver.get(BASE_URL)
     
     dashboard_page = DashboardPage(driver, logger)
     
-    # create more than 10 users
+    # create more than 10 users to enable pagination
     create_users_page = dashboard_page.open_create_users_page()
     create_users_page.create_10_users()
     create_users_page.create_10_users()
@@ -127,6 +126,7 @@ def test_pagination(driver, logger):
     first_page_users = list_all_users_page.get_displayed_users_rows()
     list_all_users_page.go_to_next_page()
     second_page_users = list_all_users_page.get_displayed_users_rows()
+    
     assert first_page_users != second_page_users, "Pagination did not change the displayed users"
 
 @pytest.mark.parametrize("name,email,role,status", [
@@ -144,6 +144,7 @@ def test_reset_filters(driver, logger, name, email, role, status):
     users_before_reset = list_all_users_page.get_displayed_users_rows()
     list_all_users_page.reset_filters()
     users_after_reset = list_all_users_page.get_displayed_users_rows()
+    
     assert users_before_reset != users_after_reset, "Filters were not reset"
     
 # --- HELPER FUNCTIONS ---

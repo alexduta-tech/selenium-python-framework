@@ -20,9 +20,9 @@ class CreateUsersPage():
         self.wait_for_page_load()
         
     # Locators        
+    BUTTON_BACK_TO_DASHBOARD = (By.XPATH, "//button[contains(.,'Back')]")
     BUTTON_CREATE_USER = (By.XPATH, "//button[text()='Create User']")
     BUTTON_CREATE_10_USERS = (By.XPATH, "//button[text()='Create 10 Users']")
-    BUTTON_BACK_TO_DASHBOARD = (By.XPATH, "//button[contains(.,'Back')]")
     MESSAGE_GENERIC_LOCATOR = lambda self, msg: (By.XPATH, f"//div[text()='{msg}']")
     INPUT_NAME = (By.ID, "name")
     INPUT_EMAIL = (By.ID, "email")

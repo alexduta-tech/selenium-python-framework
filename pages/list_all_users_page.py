@@ -45,6 +45,15 @@ class ListAllUsersPage():
             lambda d: self.page_path in d.current_url 
         )   
         
+    def is_at(self) -> bool:
+        """
+        Verify that we are on the List All Users page by checking for the presence of a mandatory element.
+        
+        Returns:
+            bool: True if on List All Users page, False otherwise
+        """
+        return self.selenium_utils.is_element_present(self.INPUT_SEARCH)
+        
     def go_back_to_dashboard(self) -> None:
         """
         Go back to the Dashboard page.
