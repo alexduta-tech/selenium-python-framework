@@ -2,6 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.remote.webdriver import WebDriver
 
+from utils.config import IMPLICIT_WAIT
 from utils.selenium_utils import SeleniumUtils
 
 class UserSearchOverlapPage:
@@ -9,7 +10,7 @@ class UserSearchOverlapPage:
     Page object for the User Search Overlap page (the get random user button is overlapped by another element).
     """
     
-    def __init__(self, driver, logger):
+    def __init__(self, driver: WebDriver, logger):
         self.page_path = "/user-search-overlap"
         self.driver = driver
         self.logger = logger
@@ -21,6 +22,7 @@ class UserSearchOverlapPage:
     BUTTON_GET_RANDOM_USER = (By.ID, "getRandomUserBtn")  
     MESSAGE_SUCCESS = (By.CSS_SELECTOR, ".message.success")
     MESSAGE_ERROR = (By.CSS_SELECTOR, ".message.error")    
+    LOADING_SPINNER = (By.CSS_SELECTOR, ".spinner")
     
     # Page Object Methods
     def wait_for_page_load(self, timeout=5) -> None:
@@ -61,6 +63,7 @@ class UserSearchOverlapPage:
         self.selenium_utils.scroll_to_element(self.BUTTON_GET_RANDOM_USER)
         # Then click the button
         self.driver.find_element(*self.BUTTON_GET_RANDOM_USER).click()
+        self.selenium_utils.wait_for_element_to_disappear(self.LOADING_SPINNER)           
         
         return self
     

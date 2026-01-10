@@ -29,7 +29,7 @@ class ListAllUsersPage():
     TABLE_NO_USERS_FOUND_MESSAGE = (By.ID, "noUsersCell")
     TABLE_NEXT_PAGE_BUTTON = (By.ID, "nextPage")
     TABLE_PREVIOUS_PAGE_BUTTON = (By.ID, "prevPage")
-    LOADING_SPINNER = (By.ID, "spinner")
+    LOADING_SPINNER = (By.CSS_SELECTOR, ".spinner")
         
     # Page Object Methods
     def wait_for_page_load(self, timeout=5) -> None:
@@ -39,11 +39,12 @@ class ListAllUsersPage():
         Args:
             timeout: Maximum time to wait in seconds
         """
-        if self.logger:
-            self.logger.info("Waiting for List All Users page to load")
+        self.logger.info("Waiting for List All Users page to load")
         WebDriverWait(self.driver, timeout).until(
             lambda d: self.page_path in d.current_url 
-        )   
+        )
+        #user table loads on page load, wait for the loading spinner to disappear (if present)
+        self.selenium_utils.wait_for_element_to_disappear(self.LOADING_SPINNER)             
         
     def is_at(self) -> bool:
         """
@@ -58,8 +59,7 @@ class ListAllUsersPage():
         """
         Go back to the Dashboard page.
         """
-        if self.logger:
-            self.logger.info("Clicking back to dashboard button")
+        self.logger.info("Clicking back to dashboard button")
         self.driver.find_element(*self.BUTTON_BACK_TO_DASHBOARD).click()
 
     def filter_users(self, **kwargs) -> 'ListAllUsersPage':
@@ -75,38 +75,36 @@ class ListAllUsersPage():
         Args:
             kwargs: Key-value pairs representing user attributes 
                 to search for. Examples:
-                filter_users_by_name_or_email_by_kwargs(name="John")
-                filter_users_by_name_or_email_by_kwargs(email="john@example.com")
-                filter_users_by_name_or_email_by_kwargs(name="John", role="Admin", status="Active")
+                filter_users(name="John")
+                filter_users(email="john@example.com")
+                filter_users(name="John", role="Admin", status="Active")
         """
         if kwargs.get('name'):
             self.logger.info(f"Filtering users by name: {kwargs['name']}")
             search_input = self.driver.find_element(*self.INPUT_SEARCH)
             search_input.clear()
             search_input.send_keys(kwargs['name'])
+            self.selenium_utils.wait_for_element_to_disappear(self.LOADING_SPINNER)
         elif kwargs.get('email'):
             self.logger.info(f"Filtering users by email: {kwargs['email']}")
             search_input = self.driver.find_element(*self.INPUT_SEARCH)
             search_input.clear()
             search_input.send_keys(kwargs['email'])
+            self.selenium_utils.wait_for_element_to_disappear(self.LOADING_SPINNER)
         if kwargs.get('role'):
             self.logger.info(f"Filtering users by role: {kwargs['role']}")
             role_element = self.driver.find_element(*self.SELECT_ROLE)
             select_role = Select(role_element)
             select_role.select_by_visible_text(kwargs['role'])
+            self.selenium_utils.wait_for_element_to_disappear(self.LOADING_SPINNER)
         if kwargs.get('status'):
             self.logger.info(f"Filtering users by status: {kwargs['status']}")  
             status_element = self.driver.find_element(*self.SELECT_STATUS)
             select_status = Select(status_element)
             select_status.select_by_visible_text(kwargs['status'])
+            self.selenium_utils.wait_for_element_to_disappear(self.LOADING_SPINNER)
         if not any(k in kwargs for k in ['name', 'email', 'role', 'status']):
-            self.logger.warning("No valid keyword argument provided for filtering by name or email. Please use 'name' or 'email'.")
-        
-        # wait for possible loading spinner to disappear
-        if self.selenium_utils.is_element_present(self.LOADING_SPINNER):
-            WebDriverWait(self.driver, IMPLICIT_WAIT).until(
-                lambda d: not d.find_element(*self.LOADING_SPINNER).is_displayed()
-            )
+            self.logger.warning("No valid keyword argument provided for filtering by name or email. Please use 'name' or 'email'.")        
         
         return self
     
@@ -154,11 +152,7 @@ class ListAllUsersPage():
         self.logger.info("Clicking next page button")
         self.driver.find_element(*self.TABLE_NEXT_PAGE_BUTTON).click()
  
-        # wait for possible loading spinner to disappear
-        if self.selenium_utils.is_element_present(self.LOADING_SPINNER):
-            WebDriverWait(self.driver, IMPLICIT_WAIT).until(
-                lambda d: not d.find_element(*self.LOADING_SPINNER).is_displayed()
-            )
+        self.selenium_utils.wait_for_element_to_disappear(self.LOADING_SPINNER) 
  
         return self
     
@@ -169,11 +163,7 @@ class ListAllUsersPage():
         self.logger.info("Clicking previous page button")
         self.driver.find_element(*self.TABLE_PREVIOUS_PAGE_BUTTON).click()
         
-        # wait for possible loading spinner to disappear
-        if self.selenium_utils.is_element_present(self.LOADING_SPINNER):
-            WebDriverWait(self.driver, IMPLICIT_WAIT).until(
-                lambda d: not d.find_element(*self.LOADING_SPINNER).is_displayed()
-            )
+        self.selenium_utils.wait_for_element_to_disappear(self.LOADING_SPINNER) 
                 
         return self
 
@@ -196,10 +186,6 @@ class ListAllUsersPage():
         self.logger.info("Clicking reset filters button")
         self.driver.find_element(*self.BUTTON_RESET_FILTERS).click()
         
-        # wait for possible loading spinner to disappear
-        if self.selenium_utils.is_element_present(self.LOADING_SPINNER):
-            WebDriverWait(self.driver, IMPLICIT_WAIT).until(
-                lambda d: not d.find_element(*self.LOADING_SPINNER).is_displayed()
-            )
+        self.selenium_utils.wait_for_element_to_disappear(self.LOADING_SPINNER) 
         
-        return self
+        return self    

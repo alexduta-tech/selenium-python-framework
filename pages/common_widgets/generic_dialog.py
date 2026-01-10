@@ -1,8 +1,8 @@
 from selenium.webdriver.remote.webdriver import WebDriver
 
-class GenericAlertDialog:
+class GenericDialog:
     """
-    Page object for the Generic Alert Dialog: alert, confirm, prompt.
+    Page object for the Generic Dialog: alert, confirm, prompt.
     """
 
     def __init__(self, driver: WebDriver, logger):
@@ -11,7 +11,7 @@ class GenericAlertDialog:
 
     def get_generic_dialog_text(self) -> str:
         """
-        Get the text of the alert dialog.
+        Get the text of the dialog.
 
         Returns:
             str: The text of the alert dialog
@@ -22,7 +22,7 @@ class GenericAlertDialog:
         
         return alert_text   
     
-    def accept_generic_alert_dialog(self) -> 'GenericAlertDialog':
+    def accept_generic_dialog(self) -> 'GenericDialog':
         """
         Accept the alert/confirm dialog.
         """
@@ -32,7 +32,7 @@ class GenericAlertDialog:
         
         return self 
     
-    def cancel_confirm_or_prompt_dialog(self) -> 'GenericAlertDialog':
+    def cancel_confirm_or_prompt_dialog(self) -> 'GenericDialog':
         """
         Cancel the confirm/prompt dialog.
         """
@@ -42,7 +42,7 @@ class GenericAlertDialog:
         
         return self   
     
-    def send_text_to_prompt_dialog(self, text: str) -> 'GenericAlertDialog':
+    def send_text_to_prompt_dialog(self, text: str) -> 'GenericDialog':
         """
         Send text to the prompt dialog.
 

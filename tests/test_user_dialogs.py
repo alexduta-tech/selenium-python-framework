@@ -1,3 +1,6 @@
+"""
+Test suite for the user dialogs page
+"""
 import pytest
 from pages.dashboard_page import DashboardPage
 from utils.config import BASE_URL

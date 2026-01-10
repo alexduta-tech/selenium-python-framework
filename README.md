@@ -70,8 +70,10 @@ Please see the instructions here: https://github.com/alexduta-tech/automation-la
     docker compose exec selenium_tests pytest -m smoke
     ```
 
-The generated reports (html, screenshots) will be available in the `reports` directory on your local machine.
-The generated logs will be available in the `logs` directory on your local machine.
+Notes:
+- In Docker the `headless` mode option is the strongly recommended to be used to run the automated tests (this is the default option set in the config file).
+-The generated reports (html, screenshots) will be available in the `reports` directory on the execution machine.
+-The generated logs will be available in the `logs` directory on the execution machine.
 
 ### Local execution
 -   **Create virtual environment (if not already created):**

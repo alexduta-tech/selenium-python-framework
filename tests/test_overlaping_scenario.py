@@ -1,3 +1,6 @@
+"""
+Test suite for the overlapping scenario page
+"""
 import pytest
 
 from pages.dashboard_page import DashboardPage

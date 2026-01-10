@@ -1,7 +1,8 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.remote.webdriver import WebDriver
-from pages.common_widgets.generic_alert_dialog import GenericAlertDialog
+from pages.common_widgets.generic_dialog import GenericDialog
+from utils.config import IMPLICIT_WAIT
 from utils.selenium_utils import SeleniumUtils
 
 class UserDialogsPage():
@@ -14,7 +15,7 @@ class UserDialogsPage():
         self.driver = driver
         self.logger = logger
         self.selenium_utils = SeleniumUtils(self.driver, self.logger)
-        self.generic_alert_dialog = GenericAlertDialog(self.driver, self.logger)
+        self.generic_alert_dialog = GenericDialog(self.driver, self.logger)
         self.wait_for_page_load()
 
     # Locators
@@ -24,6 +25,7 @@ class UserDialogsPage():
     BUTTON_SHOW_PROMPT = (By.ID, "promptBtn")
     MESSAGE_SUCCESS = (By.CSS_SELECTOR, ".message.success")
     MESSAGE_ERROR = (By.CSS_SELECTOR, ".message.error")
+    LOADING_SPINNER = (By.CSS_SELECTOR, ".spinner")
     
     # Page Object Methods
     def wait_for_page_load(self, timeout=5) -> None:
@@ -68,7 +70,8 @@ class UserDialogsPage():
         """
         Accept the alert dialog.
         """
-        self.generic_alert_dialog.accept_generic_alert_dialog()
+        self.generic_alert_dialog.accept_generic_dialog()
+        self.selenium_utils.wait_for_element_to_disappear(self.LOADING_SPINNER)         
         
         return self
     
@@ -80,19 +83,23 @@ class UserDialogsPage():
             str: The text of the success message or error message if present
         """
         
+        # error message is present and it was expected
         if is_error_expected:
             error_message = self.driver.find_element(*self.MESSAGE_ERROR).text
             self.logger.info(f"Error message is present on the page, text: {error_message}")
             return error_message
-            
+        
+        # error message is present and it was not expected           
         if self.selenium_utils.is_element_present(self.MESSAGE_ERROR):
             self.logger.error("Error message present on the page, no success message available")
             return self.driver.find_element(*self.MESSAGE_ERROR).text
         
+        # success message is not present but it was expected
         if not self.selenium_utils.is_element_present(self.MESSAGE_SUCCESS):
             self.logger.error("Success message not present on the page")
             return "Success message not present on the page"
         
+        # success message is present
         success_message = self.driver.find_element(*self.MESSAGE_SUCCESS).text
         self.logger.info(f"Success message is present on the page, text: {success_message}")
         
@@ -111,7 +118,9 @@ class UserDialogsPage():
         """
         Accept the confirm dialog.
         """
-        self.generic_alert_dialog.accept_generic_alert_dialog()
+        self.generic_alert_dialog.accept_generic_dialog()
+        # wait for the loading spinner to disappear (if present)
+        self.selenium_utils.wait_for_element_to_disappear(self.LOADING_SPINNER)           
         
         return self
     
@@ -120,6 +129,8 @@ class UserDialogsPage():
         Cancel the confirm dialog.
         """
         self.generic_alert_dialog.cancel_confirm_or_prompt_dialog()
+        # wait for the loading spinner to disappear (if present)
+        self.selenium_utils.wait_for_element_to_disappear(self.LOADING_SPINNER)            
         
         return self
         
@@ -140,7 +151,8 @@ class UserDialogsPage():
             text (str): The text to send to the prompt dialog
         """
         self.generic_alert_dialog.send_text_to_prompt_dialog(text)
-        self.generic_alert_dialog.accept_generic_alert_dialog()
+        self.generic_alert_dialog.accept_generic_dialog()
+        self.selenium_utils.wait_for_element_to_disappear(self.LOADING_SPINNER)            
         
         return self
     
@@ -149,6 +161,7 @@ class UserDialogsPage():
         Cancel the prompt dialog.
         """
         self.generic_alert_dialog.cancel_confirm_or_prompt_dialog()
+        self.selenium_utils.wait_for_element_to_disappear(self.LOADING_SPINNER)            
         
         return self
     

@@ -1,9 +1,11 @@
+"""
+Test suite for the list all users page
+"""
 from typing import Optional
 import pytest
 from pages.dashboard_page import DashboardPage
 from utils.config import BASE_URL
 from utils.data_generator import random_name, non_existing_name, random_email, random_role, random_status
-
 
 @pytest.mark.parametrize("name,email,role,status", [
     (random_name, random_email, random_role, random_status)
