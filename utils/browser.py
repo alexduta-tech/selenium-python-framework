@@ -3,7 +3,6 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.edge.options import Options as EdgeOptions
 from utils.config import IMPLICIT_WAIT, DEFAULT_BROWSER, DEFAULT_HEADLESS
-from utils.docker import running_in_docker
 
 def get_driver(logger):
     browser_name = DEFAULT_BROWSER
@@ -18,13 +17,7 @@ def get_driver(logger):
             driver = _start_firefox_driver(headless)
 
         elif browser_name == "edge":
-            # Docker: Edge isn't in starndard Debian repos by default, using Chromium-based Edge
-            if running_in_docker(logger):
-                logger.info("Running in Docker: using Chromium-Edge")
-                driver = _start_chromium_edge_driver(headless)
-            else:
-                logger.info("Not running in Docker: using Microsoft Edge")
-                driver = _start_edge_driver(headless)
+            driver = _start_edge_driver(headless)
 
         else:
             logger.warning(f"Browser '{browser_name}' not supported, defaulting to Chrome.")
@@ -60,18 +53,6 @@ def _start_chrome_driver(headless: bool):
     driver = webdriver.Chrome(options=options)
     return driver
     
-def _start_chromium_edge_driver(headless: bool):
-    """Start a Chromium Edge instance."""
-    options = ChromeOptions()
-    if headless:
-        options.add_argument("--headless=new")
-        options.add_argument("--disable-gpu")
-        options.add_argument("--no-sandbox")
-        options.add_argument("--disable-dev-shm-usage")
-        options.add_argument("--window-size=1920,1080")
-    driver = webdriver.ChromiumEdge(options=options)
-    return driver
-    
 def _start_firefox_driver(headless: bool):
     """Start a Firefox WebDriver instance."""
     options = FirefoxOptions()
@@ -86,7 +67,10 @@ def _start_edge_driver(headless: bool):
     """Start an Edge WebDriver instance."""
     options = EdgeOptions()
     if headless:
-        options.add_argument("--headless")
+        options.add_argument("--headless=new")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--window-size=1920,1080")
     driver = webdriver.Edge(options=options)
     return driver

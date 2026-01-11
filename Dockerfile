@@ -14,30 +14,39 @@ RUN pip install --no-cache-dir --upgrade pip && \
 
 # Install system packages and browsers required for Selenium tests
 # Keep the list minimal and use --no-install-recommends to reduce image size
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        ca-certificates \
-        wget \
-        fonts-liberation \
-        libnss3 \
-        libxss1 \
-        libasound2 \
-        libatk1.0-0 \
-        libatk-bridge2.0-0 \
-        libcups2 \
-        libdrm2 \
-        libxrandr2 \
-        libgbm1 \
-        libxcomposite1 \
-        libxdamage1 \
-        libxfixes3 \
-        libx11-xcb1 \
-        libgtk-3-0 \
-        chromium \
-        firefox-esr && \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    gnupg \
+    ca-certificates \
+    wget \
+    fonts-liberation \
+    libnss3 \
+    libxss1 \
+    libasound2 \
+    libatk1.0-0 \
+    libatk-bridge2.0-0 \
+    libcups2 \
+    libdrm2 \
+    libxrandr2 \
+    libgbm1 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxfixes3 \
+    libx11-xcb1 \
+    libgtk-3-0 \
+    chromium \
+    firefox-esr && \
+    # Add Microsoft Edge Key
+    curl -fSsL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /usr/share/keyrings/microsoft-edge.gpg && \
+    install -o root -g root -m 644 /usr/share/keyrings/microsoft-edge.gpg /etc/apt/trusted.gpg.d/ && \
+    # Add Microsoft Edge Repository
+    echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge.list && \
+    # Install Microsoft Edge Browser
+    apt-get update && \
+    apt-get install -y --no-install-recommends microsoft-edge-stable && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
+    rm -rf /var/lib/apt/lists/* /usr/share/keyrings/microsoft-edge.gpg
+        
 # Final stage - reuse the builder image (keeps layers and installed packages)
 FROM builder
 

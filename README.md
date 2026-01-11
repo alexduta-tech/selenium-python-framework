@@ -15,7 +15,7 @@ This project provides a Selenium WebDriver framework for testing web application
 - **Programming language:** Python, chosen for readability and strong Selenium ecosystem
 - **Web automation framework:** Selenium WebDriver
 - **Cross-platform support:** Windows and Linux
-- **Cross-browser testing:** Chrome, Firefox, and Edge (or Chromium based browsers on Docker)
+- **Cross-browser testing:** Chrome, Firefox, and Edge
 - **Dockerized Environment:** Tests can be run in Docker containers with all dependencies preinstalled, enabling consistent and OS-independent execution
 - **Page Object Model:** Organizes page elements and interactions for better maintainability.
 - **Pytest Framework:** Uses pytest for writing and running tests.
@@ -72,8 +72,8 @@ Please see the instructions here: https://github.com/alexduta-tech/automation-la
 
 Notes:
 - In Docker the `headless` mode option is the strongly recommended to be used to run the automated tests (this is the default option set in the config file).
--The generated reports (html, screenshots) will be available in the `reports` directory on the execution machine.
--The generated logs will be available in the `logs` directory on the execution machine.
+- The generated reports (html, screenshots) will be available in the `reports` directory on the execution machine.
+- The generated logs will be available in the `logs` directory on the execution machine.
 
 ### Local execution
 -   **Create virtual environment (if not already created):**
