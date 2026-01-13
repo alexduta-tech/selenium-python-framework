@@ -29,6 +29,7 @@ services:
       - ./tests:/app/tests
       - ./utils:/app/utils
       - ./pages:/app/pages
+      - ./data:/app/data
     # Default runtime environment; Sets environment variables inside the container.
     environment:
       - HEADLESS=true # on Docker headless should be true
