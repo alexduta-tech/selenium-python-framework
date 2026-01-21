@@ -58,7 +58,7 @@ Please see the instructions here: https://github.com/alexduta-tech/automation-la
 
 ### Docker execution
 - You can run the tests by executing commands inside the running container.
-- From selenium-python-framework foler execute the following commands:
+- From selenium-python-framework folder execute the following commands:
 
 -   **Run all tests:**
     ```bash
@@ -69,6 +69,7 @@ Please see the instructions here: https://github.com/alexduta-tech/automation-la
     ```bash
     docker compose exec selenium_tests pytest -m smoke
     ```
+
 -   **Run tests a given number of times (e.g. 2 times):**    
     ```bash
     docker compose exec selenium_tests pytest -m smoke --count=2
@@ -112,6 +113,11 @@ Notes:
     DEFAULT_BROWSER = "firefox"
     DEFAULT_BROWSER = "edge"
     ```
+-   To run tests in headed mode (only locall runs/not on Docker) please update to false the following variable:
+    ```
+    \utils\config.py\ DEFAULT_HEADLESS 
+    ```
+
 ### Reports and logs
 - The generated reports (html, screenshots) will be available in the `reports` directory on the execution machine.
 - Also a `.json report file` will be generated in the `reports` directory, this file contains all the execution details like overall and individual test status, execution time etc.
