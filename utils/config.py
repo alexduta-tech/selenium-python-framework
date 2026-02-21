@@ -12,4 +12,4 @@ IMPLICIT_WAIT = 10
 
 # Browser configuration defaults (can be overridden by the environment variables stored in the existing docker-compose.yml)
 DEFAULT_BROWSER = "chrome"  # Options: "chrome", "firefox", "edge"
-DEFAULT_HEADLESS = os.getenv("HEADLESS", "false").lower() in ("1", "true", "yes", "y", "on")
+DEFAULT_HEADLESS = os.getenv("HEADLESS", "true").lower() in ("1", "true", "yes", "y", "on")
